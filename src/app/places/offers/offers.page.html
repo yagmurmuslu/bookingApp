@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>My Offers</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button routerLink="/places/tabs/offers/new" color="primary">
+        <ion-icon name="add" slot="icon-only"></ion-icon>
+        <ion-label>Add Offer</ion-label>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-sm="10" offset-sm="1">
+        <div *ngIf="isLoading" class="ion-text-center">
+          <ion-spinner name="circles" color="primary"></ion-spinner>
+        </div>
+
+        <div class="ion-text-center" *ngIf="!isLoading && offers.length === 0">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>No Offers Found</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <p>No offers found! Please create one first!</p>
+              <ion-button expand="full" color="primary" routerLink="/places/tabs/offers/new">
+                <ion-icon name="add"></ion-icon>
+                <ion-label>Offer New Place</ion-label>
+              </ion-button>
+            </ion-card-content>
+          </ion-card>
+        </div>
+
+        <ion-list *ngIf="!isLoading && offers.length > 0">
+          <ion-item-sliding *ngFor="let offer of offers" #slidingItem>
+            <app-offer-item [offer]="offer"></app-offer-item>
+            <ion-item-options side="end">
+              <ion-item-option
+                color="secondary"
+                (click)="onEdit(offer.id, slidingItem)"
+              >
+                <ion-icon name="create" slot="icon-only"></ion-icon>
+                <ion-label>Edit</ion-label>
+              </ion-item-option>
+              <ion-item-option
+                color="danger"
+                (click)="onDelete(offer.id, slidingItem)"
+              >
+                <ion-icon name="trash" slot="icon-only"></ion-icon>
+                <ion-label>Delete</ion-label>
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
